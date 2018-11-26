@@ -1,4 +1,4 @@
-# my-app2
+# new-hinata
 
 > A Vue.js project
 
