@@ -3,7 +3,7 @@
                v-bind:options="{
                 handle:'.handle-div',
                 animation: 200,
-                //delay: 50        //スクロール防止（長押しでソート）
+                // delay: 50
            }"
                v-on:start="listDragBegin"
                v-on:end="listDragEnd"
@@ -34,7 +34,6 @@
 <script>
 import VueDraggableResizable from 'vue-draggable-resizable'
 import draggable from 'vuedraggable'
-// import vueSlider from 'vue-slider-component'
 export default {
   name: 'Layer',
   props: ['val'],
@@ -70,9 +69,6 @@ export default {
         this.$store.commit('updateList02', result)
         this.map02.removeLayer(item.layer)
       }
-    },
-    onDragging: function () {
-      console.log('onDragging')
     }
   },
   computed: {
@@ -183,7 +179,7 @@ export default {
     .button-div{
         position: absolute;
         top:10px;
-        right:0px;
+        right:0;
         width:15px;
         cursor: pointer;
     }
