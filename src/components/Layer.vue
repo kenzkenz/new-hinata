@@ -1,15 +1,8 @@
 <template>
     <draggable element="ul"
-               v-bind:options="{
-                handle:'.handle-div',
-                animation: 200,
-                // delay: 50
-           }"
-               v-on:start="listDragBegin"
-               v-on:end="listDragEnd"
-               v-model="storeLayerList"
-    >
-        <li v-for="item in storeLayerList" v-bind:key="item.id">
+               :options="{handle:'.handle-div',animation: 200}"
+               @start="listDragBegin" @end="listDragEnd" v-model="storeLayerList">
+        <li v-for="item in storeLayerList" :key="item.id">
             <div class="list-div">
                 <div class="handle-div" >
                     <v-icon name="align-justify" class="hover-white handle-icon"/>
@@ -18,10 +11,10 @@
                     {{ item.name }}
                 </div>
                 <div class="range-div">
-                    <input type="range" class="range" v-model.number="item.opacity" v-on:input="opacityChange(item)">
+                    <input type="range" class="range" v-model.number="item.opacity" @input="opacityChange(item)">
                 </div>
                 <div class="button-div">
-                    <div v-on:click="removeLayer(item)">
+                    <div @click="removeLayer(item)">
                         <v-icon name="times" scale="1.0" class="hover"/>
                     </div>
                 </div>

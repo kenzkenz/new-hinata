@@ -20,10 +20,6 @@ export default {
   components: {
     VueDraggableResizable
   },
-  data () {
-    return {
-    }
-  },
   methods: {
     closeBtn () {
       this.$store.commit('editDialogArr', {name: this.opt.name, flg: true})

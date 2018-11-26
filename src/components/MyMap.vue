@@ -4,7 +4,7 @@
             <div id="top-right-div">
                 <el-button type="info" size="medium" @click="openDialog">背景</el-button>
             </div>
-            <G-Dialog v-bind:opt="{name:'map01Dialog',position:{top:'56px', right:'210px'},dialog:{height:'auto'}}">
+            <G-Dialog :opt="{name:'map01Dialog',position:{top:'56px', right:'210px'},dialog:{height:'auto'}}">
                 <div class="first-content-div">
                     <Layer val="map01Dialog"/>
                 </div>
@@ -15,7 +15,7 @@
 
         </div>
         <div id="map02">
-            <G-Dialog v-bind:opt="{name:'map02Dialog',position:{top:'56px', right:'210px'},dialog:{height:'auto'}}">
+            <G-Dialog :opt="{name:'map02Dialog',position:{top:'56px', right:'210px'},dialog:{height:'auto'}}">
                 <div class="first-content-div">
                     <Layer val="map02Dialog"/>
                 </div>

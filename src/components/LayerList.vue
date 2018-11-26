@@ -1,9 +1,5 @@
 <template>
-    <tree
-            :data="treeData"
-            :options="treeOptions"
-            v-on:node:selected="onNodeSelected"
-    />
+    <tree :data="treeData" :options="treeOptions" @node:selected="onNodeSelected"/>
 </template>
 
 <script>
@@ -48,10 +44,6 @@ export default {
       }
       node.unselect()// セレクト状態を解除
     }
-  },
-  computed: {
-  },
-  mounted () {
   }
 }
 </script>
