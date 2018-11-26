@@ -8,7 +8,7 @@ const store = new Vuex.Store({
     map01: null,
     map02: null,
     layerList01: [{id: 1, name: '標準地図', layer: layers[1].children[0].data.layer, opacity: 100}],
-    layerList02: [{id: 1, name: '標準地s図', layer: layers[1].children[0].data.layer2, opacity: 100}],
+    layerList02: [{id: 1, name: '標準地図', layer: layers[1].children[0].data.layer2, opacity: 100}],
     // layerList: [{id: 0, name: 'OSM', layer: layers[0].data.layer, opacity: 100}],
     notification: '',
     dialogArr: []
