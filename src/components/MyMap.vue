@@ -1,10 +1,12 @@
+最初に呼び出されるvueファイル。ここに他のvueファイルを取り込んでいく。
 <template>
     <div id="map00">
-        <div id="map01">
-            <div id="top-right-div">
-                <el-button type="info" size="medium" @click="openDialog">背景</el-button>
+        <div id="map01" :style="map01Size">
+            <div class="top-right-div">
+                <el-button type="info" size="medium" @click="dualMap">２画面</el-button>
+                <el-button type="info" size="medium" @click="openDialog('map01Dialog')">背景</el-button>
             </div>
-            <G-Dialog :opt="{name:'map01Dialog',position:{top:'56px', right:'210px'},dialog:{height:'auto'}}">
+            <G-Dialog :opt="{close: false, name:'map01Dialog',position:{top:'56px', right:'210px'},dialog:{height:'auto'}}">
                 <div class="first-content-div">
                     <Layer val="map01Dialog"/>
                 </div>
@@ -14,8 +16,11 @@
             </G-Dialog>
 
         </div>
-        <div id="map02">
-            <G-Dialog :opt="{name:'map02Dialog',position:{top:'56px', right:'210px'},dialog:{height:'auto'}}">
+        <div id="map02" :style="map02Size">
+            <div class="top-right-div" v-show="map02RightDiv">
+                <el-button type="info" size="medium" @click="openDialog('map02Dialog')">背景</el-button>
+            </div>
+            <G-Dialog :opt="{close: true, name:'map02Dialog',position:{top:'56px', right:'210px'},dialog:{height:'auto'}}">
                 <div class="first-content-div">
                     <Layer val="map02Dialog"/>
                 </div>
@@ -35,7 +40,6 @@ import { fromLonLat } from 'ol/proj.js'
 import layers from '../layers.js'
 import LayerList from './LayerList.vue'
 import Layer from './Layer.vue'
-// import Dialog from './Dialog.vue'
 const center = fromLonLat([140.097, 37.856])
 export default {
   name: 'MyMap',
@@ -45,18 +49,43 @@ export default {
   },
   data () {
     return {
-      map01Dialog: {
-        right: '300px'
-      },
-      map02Dialog: {
-        right: '200px'
-      }
+      map01Size: {width: '100%', height: window.innerHeight + 'px'},
+      map02Size: {width: '0', height: window.innerHeight + 'px'},
+      map02RightDiv: false
     }
   },
   methods: {
-    openDialog () {
-      this.$store.commit('editDialogArr', {name: 'map01Dialog', flg: 'toggle'})
-      this.$store.commit('editDialogArr', {name: 'map02Dialog', flg: 'toggle'})
+    openDialog (dialog) { this.$store.commit('editDialogArr', {name: dialog, flg: 'toggle'}) },
+    dualMap () {
+      const vm = this // thisが変わってしまうので代入
+      let start01, end01, start02
+      if (vm.map01Size.width === '100%') { // ２画面になろうとしているとき
+        vm.map02RightDiv = true // 画面右上部のメニューを表示
+        start01 = 100; end01 = 50; start02 = 0
+      } else { // １画面に戻ろうとしているとき
+        vm.map02RightDiv = false // 画面右上部のメニュー隠す
+        vm.$store.commit('editDialogArr', {name: 'map02Dialog', flg: true}) // レイヤーダイアログを隠す
+        start01 = 50; end01 = 100; start02 = 50
+      }
+      this.$nextTick(function () {
+        const recursive = function () {
+          vm.map01Size = {width: start01 + '%', height: window.innerHeight + 'px'}
+          vm.map02Size = {width: start02 + '%', height: window.innerHeight + 'px'}
+          vm.$store.state.map01.updateSize(); vm.$store.state.map02.updateSize()
+          if (end01 === 50) {
+            start01--; start02++
+          } else {
+            start01++; start02--
+          }
+          const st = setTimeout(recursive, 2)
+          if (end01 === 50) {
+            if (start01 < end01) clearTimeout(st)
+          } else {
+            if (start01 > end01) clearTimeout(st)
+          }
+        }
+        recursive()
+      })
     }
   },
   computed: {
@@ -68,9 +97,9 @@ export default {
   }
 }
 function initMap (store) {
-  let target = document.getElementById('map01')
+  // let target = document.getElementById('map01')
   let map01 = null
-  target.style.height = window.innerHeight + 'px'
+  // target.style.height = window.innerHeight + 'px'
   map01 = new Map({
     layers: [
       // layers[0].data.layer
@@ -88,9 +117,9 @@ function initMap (store) {
     console.log(store.state.map01)
   })
   // map2
-  target = document.getElementById('map02')
+  // target = document.getElementById('map02')
   let map02 = null
-  target.style.height = window.innerHeight + 'px'
+  // target.style.height = window.innerHeight + 'px'
   map02 = new Map({
     layers: [
       // layers[0].data.layer
@@ -114,12 +143,12 @@ function initMap (store) {
         width: 100%;
     }
     #map01{
-        width: 50%;
+        /*width: 50%;*/
         height: 300px;
         /*background-color: #1e88e5;*/
         position: relative;
     }
-    #top-right-div{
+    .top-right-div{
         position: absolute;
         margin: 0;
         padding: 10px;

@@ -1,3 +1,4 @@
+選択可能なレイヤーを全て表示するツリーのvueファイル。
 <template>
     <tree :data="treeData" :options="treeOptions" @node:selected="onNodeSelected"/>
 </template>
@@ -17,16 +18,14 @@ export default {
   },
   data () {
     return {
-      dialogWidth: '200px',
-      dialogHeight: 'auto',
       treeData: layers,
-      treeOptions: {}
+      treeOptions: {} // 今の所なにも設定していない
     }
   },
   methods: {
     onNodeSelected: function (node) {
-      if (node.children.length === 0) {
-        if (this.val === 'map01Dialog') {
+      if (node.children.length === 0) { // 子ノードがいないときだけ＝親ノードではないとき
+        if (this.val === 'map01Dialog') { // 親vueから取得したvalで分岐させる。
           this.$store.commit('unshiftLayerList01', {
             id: node.data.id,
             name: node.text,
@@ -42,21 +41,14 @@ export default {
           })
         }
       }
-      node.unselect()// セレクト状態を解除
+      node.unselect()// セレクト状態を解除。解除しないと続けて押せない。
     }
   }
 }
 </script>
 
-<style scoped>
-    .hover-red:hover{
-        color: red;
-    }
-    .hover-white:hover{
-        color: white;
-    }
-</style>
 <style>
+    /*非scopedでないと反映しなかったため*/
     .tree-root{
         margin: 0;
     }

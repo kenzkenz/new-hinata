@@ -1,3 +1,4 @@
+選択されたリストを表示するvueファイル。親から取得したvalで右画面用、左画面用に分岐する。
 <template>
     <draggable element="ul"
                :options="{handle:'.handle-div',animation: 200}"
@@ -187,6 +188,7 @@ export default {
     }
 </style>
 <style>
+    /*非scopedでないと反映しなかったため*/
     .snotifyToast__inner{
         min-height: 50px;
     }

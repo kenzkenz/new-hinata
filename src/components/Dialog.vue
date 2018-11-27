@@ -1,3 +1,4 @@
+ダイアログ作成用の汎用vueファイル。グローバルで宣言。親からoptを取得して位置、スタイル等を設定する。
 <template>
     <transition>
         <div class="dialog-parent-div" :style="this.opt.position" v-show="!this.storeFlg">
@@ -36,7 +37,7 @@ export default {
     }
   },
   created () {
-    this.$store.commit('pushDialogArr', {name: this.opt.name, flg: false})
+    this.$store.commit('pushDialogArr', {name: this.opt.name, flg: this.opt.close})
   }
 }
 </script>
