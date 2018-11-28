@@ -29,14 +29,14 @@ export default {
           this.$store.commit('unshiftLayerList01', {
             id: node.data.id,
             name: node.text,
-            layer: node.data.layer,
+            layer: node.data.layer[0],
             opacity: node.data.opacity
           })
         } else {
           this.$store.commit('unshiftLayerList02', {
             id: node.data.id,
             name: node.text,
-            layer: node.data.layer2,
+            layer: node.data.layer[1],
             opacity: node.data.opacity
           })
         }

@@ -1,8 +1,8 @@
 ダイアログ作成用の汎用vueファイル。グローバルで宣言。親からoptを取得して位置、スタイル等を設定する。
 <template>
     <transition>
-        <div class="dialog-parent-div" :style="this.opt.position" v-show="!this.storeFlg">
-            <vue-draggable-resizable  class="dialog-div" :resizable="true" :parent="false" drag-handle=".drag-handle" :style="this.opt.dialog" :handles="['ml','mr']">
+        <div class="dialog-parent-div" :style="this.opt.position">
+            <vue-draggable-resizable  class="dialog-div" v-show="!this.storeFlg" :resizable="true" :parent="false" drag-handle=".drag-handle" :style="this.opt.dialog" :handles="['ml','mr']">
                 <div class="drag-handle"></div>
                 <div class="close-btn-div" @click="closeBtn">
                     <v-icon name="times" scale="1.5" class="hover"/>

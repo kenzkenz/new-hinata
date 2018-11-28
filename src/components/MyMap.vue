@@ -63,21 +63,22 @@ export default {
         vm.map02RightDiv = true // 画面右上部のメニューを表示
         start01 = 100; end01 = 50; start02 = 0
       } else { // １画面に戻ろうとしているとき
-        vm.map02RightDiv = false // 画面右上部のメニュー隠す
-        vm.$store.commit('editDialogArr', {name: 'map02Dialog', flg: true}) // レイヤーダイアログを隠す
         start01 = 50; end01 = 100; start02 = 50
       }
+      const height = window.innerHeight + 'px'
       this.$nextTick(function () {
         const recursive = function () {
-          vm.map01Size = {width: start01 + '%', height: window.innerHeight + 'px'}
-          vm.map02Size = {width: start02 + '%', height: window.innerHeight + 'px'}
+          vm.map01Size = {width: start01 + '%', height: height}
+          vm.map02Size = {width: start02 + '%', height: height}
           vm.$store.state.map01.updateSize(); vm.$store.state.map02.updateSize()
           if (end01 === 50) {
-            start01--; start02++
+            start01 = start01 - 5
+            start02 = start02 + 5
           } else {
-            start01++; start02--
+            start01 = start01 + 5
+            start02 = start02 - 5
           }
-          const st = setTimeout(recursive, 2)
+          const st = setTimeout(recursive, 20)
           if (end01 === 50) {
             if (start01 < end01) clearTimeout(st)
           } else {
@@ -91,6 +92,7 @@ export default {
   computed: {
   },
   mounted () {
+    console.log(layers[1].children[0].data.layer[0])
     this.$nextTick(function () {
       initMap(this.$store)
     })
@@ -100,16 +102,17 @@ function initMap (store) {
   // let target = document.getElementById('map01')
   let map01 = null
   // target.style.height = window.innerHeight + 'px'
+  let view01 = new View({
+    center: center,
+    zoom: 8
+  })
   map01 = new Map({
     layers: [
       // layers[0].data.layer
-      layers[1].children[0].data.layer
+      layers[1].children[0].data.layer[0]
     ],
     target: 'map01',
-    view: new View({
-      center: center,
-      zoom: 8
-    })
+    view: view01
   })
   store.commit('setMap01', map01)
   map01 = store.state.map01
@@ -123,13 +126,10 @@ function initMap (store) {
   map02 = new Map({
     layers: [
       // layers[0].data.layer
-      layers[1].children[0].data.layer2
+      layers[1].children[0].data.layer[1]
     ],
     target: 'map02',
-    view: new View({
-      center: center,
-      zoom: 8
-    })
+    view: view01
   })
   store.commit('setMap02', map02)
 }
@@ -147,6 +147,7 @@ function initMap (store) {
         height: 300px;
         /*background-color: #1e88e5;*/
         position: relative;
+        z-index: 1000;
     }
     .top-right-div{
         position: absolute;
