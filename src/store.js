@@ -9,7 +9,6 @@ const store = new Vuex.Store({
     map02: null,
     layerList01: [{id: 1, name: '標準地図', layer: layers[1].children[0].data.layer[0], opacity: 100}],
     layerList02: [{id: 1, name: '標準地図', layer: layers[1].children[0].data.layer[1], opacity: 100}],
-    // layerList: [{id: 0, name: 'OSM', layer: layers[0].data.layer, opacity: 100}],
     notification: '',
     dialogArr: []
   },
@@ -37,9 +36,7 @@ const store = new Vuex.Store({
       }
     },
     unshiftLayerList01 (state, payload) {
-      // 同じレイヤーは追加しない
-      const result = state.layerList01.find(el => el.id === payload.id)
-      if (!result) {
+      if (!state.layerList01.find(el => el.id === payload.id)) { // 同じレイヤーは追加しない
         state.layerList01.unshift(payload)
       } else {
         state.notification = 'cyouhuku'
@@ -47,9 +44,7 @@ const store = new Vuex.Store({
     },
     updateList01 (state, payload) { state.layerList01 = payload },
     unshiftLayerList02 (state, payload) {
-      // 同じレイヤーは追加しない
-      const result = state.layerList02.find(el => el.id === payload.id)
-      if (!result) {
+      if (!state.layerList02.find(el => el.id === payload.id)) { // 同じレイヤーは追加しない
         state.layerList02.unshift(payload)
       } else {
         state.notification = 'cyouhuku'
