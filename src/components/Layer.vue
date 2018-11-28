@@ -153,7 +153,7 @@ export default {
         cursor: grab;
     }
     .handle-icon{
-        margin: 10px 1px 0 1px;
+        margin: 10px 5px 0 5px;
     }
     .list-div{
         position: relative;
