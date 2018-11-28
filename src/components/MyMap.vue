@@ -92,16 +92,13 @@ export default {
   computed: {
   },
   mounted () {
-    console.log(layers[1].children[0].data.layer[0])
     this.$nextTick(function () {
       initMap(this.$store)
     })
   }
 }
 function initMap (store) {
-  // let target = document.getElementById('map01')
   let map01 = null
-  // target.style.height = window.innerHeight + 'px'
   let view01 = new View({
     center: center,
     zoom: 8
@@ -120,9 +117,7 @@ function initMap (store) {
     console.log(store.state.map01)
   })
   // map2
-  // target = document.getElementById('map02')
   let map02 = null
-  // target.style.height = window.innerHeight + 'px'
   map02 = new Map({
     layers: [
       // layers[0].data.layer

@@ -53,9 +53,7 @@ export default {
       item.layer.setOpacity(item.opacity / 100)
     },
     removeLayer (item) {
-      const result = this.storeLayerList.filter(function (el) {
-        return el.id !== item.id
-      })
+      const result = this.storeLayerList.filter((el) => el.id !== item.id)
       if (this.val === 'map01Dialog') {
         this.$store.commit('updateList01', result)
         this.map01.removeLayer(item.layer)
