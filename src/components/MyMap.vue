@@ -91,7 +91,6 @@ export default {
     // 分割
     splitMap () {
       this.splitFlg = this.splitFlg * 2
-      console.log(this.splitFlg)
       if (this.splitFlg === 8) this.splitFlg = 1
       const height = window.innerHeight + 'px'
       const height2 = window.innerHeight / 2 + 'px'

@@ -21,7 +21,6 @@ const stdArr = []
 for (let i = 0; i < 4; i++) {
   stdArr[i] = new TileLayer(new Std())
 }
-console.log(stdArr)
 // 淡色地図
 function Pale () {
   this.source = new XYZ({
