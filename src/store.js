@@ -10,9 +10,9 @@ const store = new Vuex.Store({
     map03: null,
     map04: null,
     layerList01: [{id: 1, name: '標準地図', layer: layers[1].children[0].data.layer[0], opacity: 100}],
-    layerList02: [{id: 1, name: '標準地図', layer: layers[1].children[0].data.layer[1], opacity: 100}],
-    layerList03: [{id: 1, name: '標準地図', layer: layers[1].children[0].data.layer[2], opacity: 100}],
-    layerList04: [{id: 1, name: '標準地図', layer: layers[1].children[0].data.layer[3], opacity: 100}],
+    layerList02: [{id: 2, name: '淡色地図', layer: layers[1].children[1].data.layer[1], opacity: 100}],
+    layerList03: [{id: 4, name: '色別標高図', layer: layers[1].children[3].data.layer[2], opacity: 100}],
+    layerList04: [{id: 5, name: '全国最新写真', layer: layers[1].children[4].data.layer[3], opacity: 100}],
     notification: '',
     dialogArr: []
   },
