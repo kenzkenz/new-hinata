@@ -90,8 +90,8 @@ export default {
     openDialog (dialog) { this.$store.commit('editDialogArr', {name: dialog, flg: 'toggle'}) },
     // 分割
     splitMap () {
-      this.splitFlg = this.splitFlg * 2
-      if (this.splitFlg === 8) this.splitFlg = 1
+      this.splitFlg++
+      if (this.splitFlg === 6) this.splitFlg = 1
       const height = window.innerHeight + 'px'
       const height2 = window.innerHeight / 2 + 'px'
       switch (this.splitFlg) {
@@ -107,7 +107,19 @@ export default {
           this.map03Size = {top: 0, left: 0, width: 0, height: 0}
           this.map04Size = {top: 0, left: 0, width: 0, height: 0}
           break
+        case 3:
+          this.map01Size = {top: 0, left: 0, width: '50%', height: height}
+          this.map02Size = {top: 0, left: '50%', width: '50%', height: height2}
+          this.map03Size = {top: '50%', left: '50%', width: '50%', height: height2}
+          this.map04Size = {top: 0, left: 0, width: 0, height: 0}
+          break
         case 4:
+          this.map01Size = {top: 0, left: 0, width: '100%', height: height2}
+          this.map02Size = {top: '50%', left: 0, width: '50%', height: height2}
+          this.map03Size = {top: '50%', left: '50%', width: '50%', height: height2}
+          this.map04Size = {top: 0, left: 0, width: 0, height: 0}
+          break
+        case 5:
           this.map01Size = {top: 0, left: 0, width: '50%', height: height2}
           this.map02Size = {top: 0, right: 0, width: '50%', height: height2}
           this.map03Size = {top: '50%', left: 0, width: '50%', height: height2}
