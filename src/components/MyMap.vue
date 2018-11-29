@@ -15,46 +15,52 @@
                 </div>
             </G-Dialog>
         </div>
-        <div id="map02" :style="map02Size">
-            <div class="top-right-div">
-                <el-button type="info" size="medium" @click="splitMap">分割</el-button>
-                <el-button type="info" size="medium" @click="openDialog('map02Dialog')">背景</el-button>
+        <transition>
+            <div id="map02" :style="map02Size" v-show="map02Flg">
+                <div class="top-right-div">
+                    <el-button type="info" size="medium" @click="splitMap">分割</el-button>
+                    <el-button type="info" size="medium" @click="openDialog('map02Dialog')">背景</el-button>
+                </div>
+                <G-Dialog :opt="opt02">
+                    <div class="first-content-div">
+                        <Layer :name="opt02.name"/>
+                    </div>
+                    <div class="second-content-div">
+                        <LayerList :name="opt02.name" />
+                    </div>
+                </G-Dialog>
             </div>
-            <G-Dialog :opt="opt02">
-                <div class="first-content-div">
-                    <Layer :name="opt02.name"/>
+        </transition>
+        <transition>
+            <div id="map03" :style="map03Size" v-show="map03Flg">
+                <div class="top-right-div">
+                    <el-button type="info" size="medium" @click="openDialog('map03Dialog')">背景</el-button>
                 </div>
-                <div class="second-content-div">
-                    <LayerList :name="opt02.name" />
-                </div>
-            </G-Dialog>
-        </div>
-        <div id="map03" :style="map03Size">
-            <div class="top-right-div">
-                <el-button type="info" size="medium" @click="openDialog('map03Dialog')">背景</el-button>
+                <G-Dialog :opt="opt03">
+                    <div class="first-content-div">
+                        <Layer :name="opt03.name"/>
+                    </div>
+                    <div class="second-content-div">
+                        <LayerList :name="opt03.name" />
+                    </div>
+                </G-Dialog>
             </div>
-            <G-Dialog :opt="opt03">
-                <div class="first-content-div">
-                    <Layer :name="opt03.name"/>
+        </transition>
+        <transition>
+            <div id="map04" :style="map04Size"  v-show="map04Flg">
+                <div class="top-right-div">
+                    <el-button type="info" size="medium" @click="openDialog('map04Dialog')">背景</el-button>
                 </div>
-                <div class="second-content-div">
-                    <LayerList :name="opt03.name" />
-                </div>
-            </G-Dialog>
-        </div>
-        <div id="map04" :style="map04Size">
-            <div class="top-right-div">
-                <el-button type="info" size="medium" @click="openDialog('map04Dialog')">背景</el-button>
+                <G-Dialog :opt="opt04">
+                    <div class="first-content-div">
+                        <Layer :name="opt04.name"/>
+                    </div>
+                    <div class="second-content-div">
+                        <LayerList :name="opt04.name" />
+                    </div>
+                </G-Dialog>
             </div>
-            <G-Dialog :opt="opt04">
-                <div class="first-content-div">
-                    <Layer :name="opt04.name"/>
-                </div>
-                <div class="second-content-div">
-                    <LayerList :name="opt04.name" />
-                </div>
-            </G-Dialog>
-        </div>
+        </transition>
     </div>
 </template>
 
@@ -82,7 +88,10 @@ export default {
       opt02: {close: false, name: 'map02Dialog', position: {top: '56px', right: '210px'}, dialog: {height: 'auto'}},
       opt03: {close: false, name: 'map03Dialog', position: {top: '56px', right: '210px'}, dialog: {height: 'auto'}},
       opt04: {close: false, name: 'map04Dialog', position: {top: '56px', right: '210px'}, dialog: {height: 'auto'}},
-      splitFlg: 1
+      splitFlg: 1,
+      map02Flg: false,
+      map03Flg: false,
+      map04Flg: false
     }
   },
   computed: {
@@ -95,38 +104,49 @@ export default {
       if (this.splitFlg === 6) this.splitFlg = 1
       const height = window.innerHeight + 'px'
       const height2 = window.innerHeight / 2 + 'px'
+      const vm = this
       switch (this.splitFlg) {
+        // 一画面
         case 1:
+          this.map02Flg = false; this.map03Flg = false; this.map04Flg = false
           this.map01Size = {top: 0, left: 0, width: '100%', height: height}
           this.map02Size = {top: 0, right: 0, width: 0, height: 0}
           this.map03Size = {top: 0, left: 0, width: 0, height: 0}
           this.map04Size = {top: 0, left: 0, width: 0, height: 0}
           break
+        // 2画面
         case 2:
+          this.map02Flg = true; this.map03Flg = false; this.map04Flg = false
           this.map01Size = {top: 0, left: 0, width: '50%', height: height}
           this.map02Size = {top: 0, left: '50%', width: '50%', height: height}
           this.map03Size = {top: 0, left: 0, width: 0, height: 0}
           this.map04Size = {top: 0, left: 0, width: 0, height: 0}
           break
+        // 3画面１
         case 3:
+          this.map02Flg = true; this.map03Flg = true; this.map04Flg = false
           this.map01Size = {top: 0, left: 0, width: '50%', height: height}
           this.map02Size = {top: 0, left: '50%', width: '50%', height: height2}
           this.map03Size = {top: '50%', left: '50%', width: '50%', height: height2}
           this.map04Size = {top: 0, left: 0, width: 0, height: 0}
           break
+        // 3画面2
         case 4:
+          // this.map02Flg = false; this.map03Flg = false; this.map04Flg = false
+          this.map02Flg = true; this.map03Flg = true; this.map04Flg = false
           this.map01Size = {top: 0, left: 0, width: '100%', height: height2}
           this.map02Size = {top: '50%', left: 0, width: '50%', height: height2}
           this.map03Size = {top: '50%', left: '50%', width: '50%', height: height2}
           this.map04Size = {top: 0, left: 0, width: 0, height: 0}
           break
+        // 4画面
         case 5:
+          this.map02Flg = true; this.map03Flg = true; this.map04Flg = true
           this.map01Size = {top: 0, left: 0, width: '50%', height: height2}
           this.map02Size = {top: 0, right: 0, width: '50%', height: height2}
           this.map03Size = {top: '50%', left: 0, width: '50%', height: height2}
           this.map04Size = {top: '50%', left: '50%', width: '50%', height: height2}
       }
-      const vm = this
       this.$nextTick(function () {
         vm.$store.state.map01.updateSize()
         vm.$store.state.map02.updateSize()
@@ -228,7 +248,6 @@ function initMap (store) {
         right: 0;
         z-index: 1;
     }
-
     .first-content-div{
         /*height: 150px;*/
         border: 1px solid grey;
@@ -240,6 +259,16 @@ function initMap (store) {
         margin: 5px;
         /*overflow: auto;*/
         background: whitesmoke;
+    }
+    .v-enter-active, .v-leave-active {
+        transition: opacity 1s;
+    }
+    .v-leave-active {
+        transition: opacity 0s;
+    }
+    .v-enter, .v-leave-to  {
+        transform: translateX(100px);
+        opacity: 0;
     }
 </style>
 <style>
