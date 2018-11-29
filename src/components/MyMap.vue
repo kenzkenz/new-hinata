@@ -63,7 +63,6 @@ import 'ol/ol.css'
 import Map from 'ol/Map.js'
 import View from 'ol/View.js'
 import { fromLonLat } from 'ol/proj.js'
-import layers from '../layers.js'
 import LayerList from './LayerList.vue'
 import Layer from './Layer.vue'
 const center = fromLonLat([140.097, 37.856])
@@ -85,6 +84,8 @@ export default {
       opt04: {close: false, name: 'map04Dialog', position: {top: '56px', right: '210px'}, dialog: {height: 'auto'}},
       splitFlg: 1
     }
+  },
+  computed: {
   },
   methods: {
     openDialog (dialog) { this.$store.commit('editDialogArr', {name: dialog, flg: 'toggle'}) },
@@ -152,8 +153,7 @@ function initMap (store) {
   })
   map01 = new Map({
     layers: [
-      // layers[0].data.layer
-      layers[1].children[0].data.layer[0]
+      store.getters.layerList('map01Dialog')[0].layer
     ],
     target: 'map01',
     view: view01
@@ -167,8 +167,7 @@ function initMap (store) {
   let map02 = null
   map02 = new Map({
     layers: [
-      // layers[0].data.layer
-      layers[1].children[0].data.layer[1]
+      store.getters.layerList('map02Dialog')[0].layer
     ],
     target: 'map02',
     view: view01
@@ -178,8 +177,7 @@ function initMap (store) {
   let map03 = null
   map03 = new Map({
     layers: [
-      // layers[0].data.layer
-      layers[1].children[0].data.layer[2]
+      store.getters.layerList('map03Dialog')[0].layer
     ],
     target: 'map03',
     view: view01
@@ -189,8 +187,7 @@ function initMap (store) {
   let map04 = null
   map04 = new Map({
     layers: [
-      // layers[0].data.layer
-      layers[1].children[0].data.layer[3]
+      store.getters.layerList('map04Dialog')[0].layer
     ],
     target: 'map04',
     view: view01
@@ -250,6 +247,7 @@ function initMap (store) {
     body{
         margin: 0;
         padding: 0;
+        overflow: hidden;
     }
     #app {
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -258,7 +256,6 @@ function initMap (store) {
         margin: 0;
         padding: 0;
     }
-
     input[type=range] {
         height: 26px;
         -webkit-appearance: none;
