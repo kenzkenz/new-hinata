@@ -57,6 +57,18 @@ const seamlessphotoArr = []
 for (let i = 0; i < 4; i++) {
   seamlessphotoArr[i] = new TileLayer(new Seamlessphoto())
 }
+// 色別標高図
+function Relief () {
+  this.source = new XYZ({
+    url: 'https://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
+    minZoom: 5,
+    maxZoom: 15
+  })
+}
+const reliefArr = []
+for (let i = 0; i < 4; i++) {
+  reliefArr[i] = new TileLayer(new Relief())
+}
 // 宮崎県航空写真
 function MiyazakiOrt () {
   this.source = new XYZ({
@@ -78,7 +90,8 @@ const layers =
         { text: '標準地図', data: { id: 1, layer: stdArr, opacity: 100 } },
         { text: '淡色地図', data: { id: 2, layer: paleArr, opacity: 100 } },
         { text: '白地図', data: { id: 3, layer: blankArr, opacity: 100 } },
-        { text: '全国最新写真', data: { id: 4, layer: seamlessphotoArr, opacity: 100 } }
+        { text: '色別標高図', data: { id: 4, layer: reliefArr, opacity: 100 } },
+        { text: '全国最新写真', data: { id: 5, layer: seamlessphotoArr, opacity: 100 } }
       ]},
     { text: '宮崎県',
       children: [
