@@ -6,7 +6,7 @@ function Osm () {
   this.source = new OSM()
 }
 const osmArr = []
-for (let i = 0; i < 2; i++) {
+for (let i = 0; i < 4; i++) {
   osmArr[i] = new TileLayer(new Osm())
 }
 // 標準地図
@@ -18,7 +18,7 @@ function Std () {
   })
 }
 const stdArr = []
-for (let i = 0; i < 2; i++) {
+for (let i = 0; i < 4; i++) {
   stdArr[i] = new TileLayer(new Std())
 }
 console.log(stdArr)
@@ -31,7 +31,7 @@ function Pale () {
   })
 }
 const paleArr = []
-for (let i = 0; i < 2; i++) {
+for (let i = 0; i < 4; i++) {
   paleArr[i] = new TileLayer(new Pale())
 }
 // 白地図
@@ -43,7 +43,7 @@ function Blank () {
   })
 }
 const blankArr = []
-for (let i = 0; i < 2; i++) {
+for (let i = 0; i < 4; i++) {
   blankArr[i] = new TileLayer(new Blank())
 }
 // 全国最新写真
@@ -55,7 +55,7 @@ function Seamlessphoto () {
   })
 }
 const seamlessphotoArr = []
-for (let i = 0; i < 2; i++) {
+for (let i = 0; i < 4; i++) {
   seamlessphotoArr[i] = new TileLayer(new Seamlessphoto())
 }
 // 宮崎県航空写真
@@ -67,7 +67,7 @@ function MiyazakiOrt () {
   })
 }
 const miyazakiOrtArr = []
-for (let i = 0; i < 2; i++) {
+for (let i = 0; i < 4; i++) {
   miyazakiOrtArr[i] = new TileLayer(new MiyazakiOrt())
 }
 // ここにレイヤーを全部書く。クリックするとストアのlayerListに追加されていく

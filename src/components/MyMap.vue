@@ -3,29 +3,55 @@
     <div id="map00">
         <div id="map01" :style="map01Size">
             <div class="top-right-div">
-                <el-button type="info" size="medium" @click="dualMap">２画面</el-button>
+                <el-button type="info" size="medium" @click="splitMap">分割</el-button>
                 <el-button type="info" size="medium" @click="openDialog('map01Dialog')">背景</el-button>
             </div>
-            <G-Dialog :opt="{close: false, name:'map01Dialog',position:{top:'56px', right:'210px'},dialog:{height:'auto'}}">
+            <G-Dialog :opt="opt01">
                 <div class="first-content-div">
-                    <Layer val="map01Dialog"/>
+                    <Layer :name="opt01.name"/>
                 </div>
                 <div class="second-content-div">
-                    <LayerList val="map01Dialog" />
+                    <LayerList :name="opt01.name" />
                 </div>
             </G-Dialog>
-
         </div>
         <div id="map02" :style="map02Size">
-            <div class="top-right-div" v-show="map02RightDiv">
+            <div class="top-right-div">
+                <el-button type="info" size="medium" @click="splitMap">分割</el-button>
                 <el-button type="info" size="medium" @click="openDialog('map02Dialog')">背景</el-button>
             </div>
-            <G-Dialog :opt="{close: true, name:'map02Dialog',position:{top:'56px', right:'210px'},dialog:{height:'auto'}}">
+            <G-Dialog :opt="opt02">
                 <div class="first-content-div">
-                    <Layer val="map02Dialog"/>
+                    <Layer :name="opt02.name"/>
                 </div>
                 <div class="second-content-div">
-                    <LayerList val="map02Dialog" />
+                    <LayerList :name="opt02.name" />
+                </div>
+            </G-Dialog>
+        </div>
+        <div id="map03" :style="map03Size">
+            <div class="top-right-div">
+                <el-button type="info" size="medium" @click="openDialog('map03Dialog')">背景</el-button>
+            </div>
+            <G-Dialog :opt="opt03">
+                <div class="first-content-div">
+                    <Layer :name="opt03.name"/>
+                </div>
+                <div class="second-content-div">
+                    <LayerList :name="opt03.name" />
+                </div>
+            </G-Dialog>
+        </div>
+        <div id="map04" :style="map04Size">
+            <div class="top-right-div">
+                <el-button type="info" size="medium" @click="openDialog('map04Dialog')">背景</el-button>
+            </div>
+            <G-Dialog :opt="opt04">
+                <div class="first-content-div">
+                    <Layer :name="opt04.name"/>
+                </div>
+                <div class="second-content-div">
+                    <LayerList :name="opt04.name" />
                 </div>
             </G-Dialog>
         </div>
@@ -49,51 +75,61 @@ export default {
   },
   data () {
     return {
-      map01Size: {width: '100%', height: window.innerHeight + 'px'},
-      map02Size: {width: '0', height: window.innerHeight + 'px'},
-      map02RightDiv: false
+      map01Size: {top: 0, left: 0, width: '100%', height: window.innerHeight + 'px'},
+      map02Size: {top: 0, right: 0, width: 0, height: window.innerHeight + 'px'},
+      map03Size: {top: 0, right: 0, width: '50%', height: window.innerHeight / 2 + 'px'},
+      map04Size: {top: 0, right: 0, width: '50%', height: window.innerHeight / 2 + 'px'},
+      opt01: {close: false, name: 'map01Dialog', position: {top: '56px', right: '210px'}, dialog: {height: 'auto'}},
+      opt02: {close: false, name: 'map02Dialog', position: {top: '56px', right: '210px'}, dialog: {height: 'auto'}},
+      opt03: {close: false, name: 'map03Dialog', position: {top: '56px', right: '210px'}, dialog: {height: 'auto'}},
+      opt04: {close: false, name: 'map04Dialog', position: {top: '56px', right: '210px'}, dialog: {height: 'auto'}},
+      splitFlg: 1
     }
   },
   methods: {
     openDialog (dialog) { this.$store.commit('editDialogArr', {name: dialog, flg: 'toggle'}) },
-    dualMap () {
-      const vm = this // thisが変わってしまうので代入
-      let start01, end01, start02
-      if (vm.map01Size.width === '100%') { // ２画面になろうとしているとき
-        vm.map02RightDiv = true // 画面右上部のメニューを表示
-        start01 = 100; end01 = 50; start02 = 0
-      } else { // １画面に戻ろうとしているとき
-        start01 = 50; end01 = 100; start02 = 50
-      }
+    // 分割
+    splitMap () {
+      this.splitFlg = this.splitFlg * 2
+      console.log(this.splitFlg)
+      if (this.splitFlg === 8) this.splitFlg = 1
       const height = window.innerHeight + 'px'
+      const height2 = window.innerHeight / 2 + 'px'
+      switch (this.splitFlg) {
+        case 1:
+          this.map01Size = {top: 0, left: 0, width: '100%', height: height}
+          this.map02Size = {top: 0, right: 0, width: 0, height: 0}
+          this.map03Size = {top: 0, left: 0, width: 0, height: 0}
+          this.map04Size = {top: 0, left: 0, width: 0, height: 0}
+          break
+        case 2:
+          this.map01Size = {top: 0, left: 0, width: '50%', height: height}
+          this.map02Size = {top: 0, left: '50%', width: '50%', height: height}
+          this.map03Size = {top: 0, left: 0, width: 0, height: 0}
+          this.map04Size = {top: 0, left: 0, width: 0, height: 0}
+          break
+        case 4:
+          this.map01Size = {top: 0, left: 0, width: '50%', height: height2}
+          this.map02Size = {top: 0, right: 0, width: '50%', height: height2}
+          this.map03Size = {top: '50%', left: 0, width: '50%', height: height2}
+          this.map04Size = {top: '50%', left: '50%', width: '50%', height: height2}
+      }
+      const vm = this
       this.$nextTick(function () {
-        const recursive = function () {
-          vm.map01Size = {width: start01 + '%', height: height}
-          vm.map02Size = {width: start02 + '%', height: height}
-          vm.$store.state.map01.updateSize(); vm.$store.state.map02.updateSize()
-          if (end01 === 50) {
-            start01 = start01 - 5
-            start02 = start02 + 5
-          } else {
-            start01 = start01 + 5
-            start02 = start02 - 5
-          }
-          const st = setTimeout(recursive, 20)
-          if (end01 === 50) {
-            if (start01 < end01) clearTimeout(st)
-          } else {
-            if (start01 > end01) clearTimeout(st)
-          }
-        }
-        recursive()
+        vm.$store.state.map01.updateSize()
+        vm.$store.state.map02.updateSize()
+        vm.$store.state.map03.updateSize()
+        vm.$store.state.map04.updateSize()
       })
     }
-  },
-  computed: {
   },
   mounted () {
     this.$nextTick(function () {
       initMap(this.$store)
+      // デバイスによって高さ設定が効かないときがあるようなので再度
+      // this.map01Size = {width: '100%', height: window.innerHeight + 'px'}
+      // this.map02Size = {width: '0', height: window.innerHeight + 'px'}
+      // this.$store.state.map01.updateSize(); this.$store.state.map02.updateSize()
     })
   }
 }
@@ -127,6 +163,28 @@ function initMap (store) {
     view: view01
   })
   store.commit('setMap02', map02)
+  // map3
+  let map03 = null
+  map03 = new Map({
+    layers: [
+      // layers[0].data.layer
+      layers[1].children[0].data.layer[2]
+    ],
+    target: 'map03',
+    view: view01
+  })
+  store.commit('setMap03', map03)
+  // map4
+  let map04 = null
+  map04 = new Map({
+    layers: [
+      // layers[0].data.layer
+      layers[1].children[0].data.layer[3]
+    ],
+    target: 'map04',
+    view: view01
+  })
+  store.commit('setMap04', map04)
 }
 </script>
 
@@ -138,11 +196,21 @@ function initMap (store) {
         width: 100%;
     }
     #map01{
-        /*width: 50%;*/
-        height: 300px;
-        /*background-color: #1e88e5;*/
+        background-color: #fff;
         position: relative;
         z-index: 1000;
+    }
+    #map02{
+        background-color: #fff;
+        position: absolute;
+    }
+    #map03{
+        background-color: white;
+        position: absolute;
+    }
+    #map04{
+        background-color: white;
+        position: absolute;
     }
     .top-right-div{
         position: absolute;
@@ -152,14 +220,7 @@ function initMap (store) {
         right: 0;
         z-index: 1;
     }
-    #map02{
-        width: 50%;
-        height: 300px;
-        /*background-color: red;*/
-        position: absolute;
-        right: 0;
-        top:0;
-    }
+
     .first-content-div{
         /*height: 150px;*/
         border: 1px solid grey;

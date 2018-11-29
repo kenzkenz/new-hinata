@@ -30,7 +30,7 @@ import VueDraggableResizable from 'vue-draggable-resizable'
 import draggable from 'vuedraggable'
 export default {
   name: 'Layer',
-  props: ['val'],
+  props: ['name'],
   components: {
     VueDraggableResizable,
     draggable
@@ -54,37 +54,22 @@ export default {
     },
     removeLayer (item) {
       const result = this.storeLayerList.filter((el) => el.id !== item.id)
-      if (this.val === 'map01Dialog') {
-        this.$store.commit('updateList01', result)
+      this.$store.commit('updateList', {value: result, name: this.name})
+      if (this.name === 'map01Dialog') {
         this.map01.removeLayer(item.layer)
       } else {
-        this.$store.commit('updateList02', result)
         this.map02.removeLayer(item.layer)
       }
     }
   },
   computed: {
-    map01 () {
-      return this.$store.getters.map01
-    },
-    map02 () {
-      return this.$store.getters.map02
-    },
+    map01 () { return this.$store.getters.map01 },
+    map02 () { return this.$store.getters.map02 },
+    map03 () { return this.$store.getters.map03 },
+    map04 () { return this.$store.getters.map04 },
     storeLayerList: {
-      get () {
-        if (this.val === 'map01Dialog') {
-          return this.$store.getters.layerList01
-        } else {
-          return this.$store.getters.layerList02
-        }
-      },
-      set (value) {
-        if (this.val === 'map01Dialog') {
-          this.$store.commit('updateList01', value)
-        } else {
-          this.$store.commit('updateList02', value)
-        }
-      }
+      get () { return this.$store.getters.layerList(this.name) },
+      set (value) { this.$store.commit('updateList', {value: value, name: this.name}) }
     },
     storeNotification: {
       get () { return this.$store.getters.notification },
@@ -95,21 +80,26 @@ export default {
     // ストアを監視。レイヤーを追加したとき・順番を変えたときに動く
     storeLayerList: function (newLayerList, oldLayerList) {
       // this.dialogHeight = ((40 * newLayerList.length) + 30 + 5) + 'px'
-      if (this.val === 'map01Dialog') {
-        if (this.map01) {
-          for (let i = newLayerList.length - 1; i >= 0; i--) {
-            this.map01.removeLayer(newLayerList[i].layer)
-            this.map01.addLayer(newLayerList[i].layer)
-            newLayerList[i].layer.setOpacity(100)
-          }
-        }
-      } else {
-        if (this.map02) {
-          for (let i = newLayerList.length - 1; i >= 0; i--) {
-            this.map02.removeLayer(newLayerList[i].layer)
-            this.map02.addLayer(newLayerList[i].layer)
-            newLayerList[i].layer.setOpacity(100)
-          }
+      let map
+      switch (this.name) {
+        case 'map01Dialog':
+          map = this.map01
+          break
+        case 'map02Dialog':
+          map = this.map02
+          break
+        case 'map03Dialog':
+          map = this.map03
+          break
+        case 'map04Dialog':
+          map = this.map04
+          break
+      }
+      if (map) {
+        for (let i = newLayerList.length - 1; i >= 0; i--) {
+          map.removeLayer(newLayerList[i].layer)
+          map.addLayer(newLayerList[i].layer)
+          newLayerList[i].layer.setOpacity(100)
         }
       }
     },
