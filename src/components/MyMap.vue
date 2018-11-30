@@ -1,20 +1,22 @@
 最初に呼び出されるvueファイル。ここに他のvueファイルを取り込んでいく。
 <template>
     <div id="map00">
-        <div id="map01" :style="map01Size">
-            <div class="top-right-div">
-                <el-button type="info" size="medium" @click="splitMap">分割</el-button>
-                <el-button type="info" size="medium" @click="openDialog('map01Dialog')">背景</el-button>
+        <transition>
+            <div id="map01" :style="map01Size" v-show="map01Flg">
+                <div class="top-right-div">
+                    <el-button type="info" size="medium" @click="splitMap">分割</el-button>
+                    <el-button type="info" size="medium" @click="openDialog('map01Dialog')">背景</el-button>
+                </div>
+                <G-Dialog :opt="opt01">
+                    <div class="first-content-div">
+                        <Layer :name="opt01.name"/>
+                    </div>
+                    <div class="second-content-div">
+                        <LayerList :name="opt01.name" />
+                    </div>
+                </G-Dialog>
             </div>
-            <G-Dialog :opt="opt01">
-                <div class="first-content-div">
-                    <Layer :name="opt01.name"/>
-                </div>
-                <div class="second-content-div">
-                    <LayerList :name="opt01.name" />
-                </div>
-            </G-Dialog>
-        </div>
+        </transition>
         <transition>
             <div id="map02" :style="map02Size" v-show="map02Flg">
                 <div class="top-right-div">
@@ -61,6 +63,12 @@
                 </G-Dialog>
             </div>
         </transition>
+        <transition>
+            <div id="lock" v-show="synchDivFlg" @click="synch">
+                <v-icon v-if="synchFlg" name="lock" scale="1.5" class="hover"/>
+                <v-icon v-else name="lock-open" scale="1.5" class="hover"/>
+            </div>
+        </transition>
     </div>
 </template>
 
@@ -89,14 +97,18 @@ export default {
       opt03: {close: false, name: 'map03Dialog', position: {top: '56px', right: '210px'}, dialog: {height: 'auto'}},
       opt04: {close: false, name: 'map04Dialog', position: {top: '56px', right: '210px'}, dialog: {height: 'auto'}},
       splitFlg: 1,
+      map01Flg: true,
       map02Flg: false,
       map03Flg: false,
-      map04Flg: false
+      map04Flg: false,
+      synchDivFlg: false,
+      synchFlg: true
     }
   },
   computed: {
   },
   methods: {
+    // レイヤーのダイアログを開く
     openDialog (dialog) { this.$store.commit('editDialogArr', {name: dialog, flg: 'toggle'}) },
     // 分割
     splitMap () {
@@ -108,6 +120,7 @@ export default {
       switch (this.splitFlg) {
         // 一画面
         case 1:
+          this.synchDivFlg = false
           this.map02Flg = false; this.map03Flg = false; this.map04Flg = false
           this.map01Size = {top: 0, left: 0, width: '100%', height: height}
           this.map02Size = {top: 0, right: 0, width: 0, height: 0}
@@ -116,6 +129,7 @@ export default {
           break
         // 2画面
         case 2:
+          this.synchDivFlg = true
           this.map02Flg = true; this.map03Flg = false; this.map04Flg = false
           this.map01Size = {top: 0, left: 0, width: '50%', height: height}
           this.map02Size = {top: 0, left: '50%', width: '50%', height: height}
@@ -124,6 +138,7 @@ export default {
           break
         // 3画面１
         case 3:
+          this.synchDivFlg = true
           this.map02Flg = true; this.map03Flg = true; this.map04Flg = false
           this.map01Size = {top: 0, left: 0, width: '50%', height: height}
           this.map02Size = {top: 0, left: '50%', width: '50%', height: height2}
@@ -133,6 +148,7 @@ export default {
         // 3画面2
         case 4:
           // this.map02Flg = false; this.map03Flg = false; this.map04Flg = false
+          this.synchDivFlg = true
           this.map02Flg = true; this.map03Flg = true; this.map04Flg = false
           this.map01Size = {top: 0, left: 0, width: '100%', height: height2}
           this.map02Size = {top: '50%', left: 0, width: '50%', height: height2}
@@ -141,6 +157,7 @@ export default {
           break
         // 4画面
         case 5:
+          this.synchDivFlg = true
           this.map02Flg = true; this.map03Flg = true; this.map04Flg = true
           this.map01Size = {top: 0, left: 0, width: '50%', height: height2}
           this.map02Size = {top: 0, right: 0, width: '50%', height: height2}
@@ -153,6 +170,27 @@ export default {
         vm.$store.state.map03.updateSize()
         vm.$store.state.map04.updateSize()
       })
+    },
+    // 同期
+    synch () {
+      this.synchFlg = !this.synchFlg
+      let map01View = this.$store.getters.map01.getView()
+      if (!this.synchFlg) {
+        const viewArr = []
+        for (let i = 0; i < 3; i++) {
+          viewArr[i] = new View({
+            center: map01View.getCenter(),
+            zoom: map01View.getZoom()
+          })
+        }
+        this.$store.getters.map02.setView(viewArr[0])
+        this.$store.getters.map03.setView(viewArr[1])
+        this.$store.getters.map04.setView(viewArr[2])
+      } else {
+        this.$store.getters.map02.setView(map01View)
+        this.$store.getters.map03.setView(map01View)
+        this.$store.getters.map04.setView(map01View)
+      }
     }
   },
   mounted () {
@@ -222,23 +260,32 @@ function initMap (store) {
     }
     #map00{
         width: 100%;
+        font-family: 'Avenir', Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        margin: 0;
+        padding: 0;
     }
     #map01{
         background-color: #fff;
         position: relative;
         z-index: 1000;
+        border: #fff 1px solid;
     }
     #map02{
         background-color: #fff;
         position: absolute;
+        border: #fff 1px solid;
     }
     #map03{
         background-color: white;
         position: absolute;
+        border: #fff 1px solid;
     }
     #map04{
         background-color: white;
         position: absolute;
+        border: #fff 1px solid;
     }
     .top-right-div{
         position: absolute;
@@ -260,14 +307,28 @@ function initMap (store) {
         /*overflow: auto;*/
         background: whitesmoke;
     }
+    #lock{
+        position: absolute;
+        top: calc(50% - 15px);
+        left: calc(50% - 15px);;
+        width:30px;
+        height: 30px;
+        border-radius: 30px;
+        text-align: center;
+        background-color: #fff;
+        color: #606266;
+        z-index: 10001;
+    }
+    #lock:hover{
+        color: gainsboro;
+    }
     .v-enter-active, .v-leave-active {
-        transition: opacity 1s;
+        transition: opacity 3s;
     }
     .v-leave-active {
-        transition: opacity 0s;
+        transition: opacity 3s;
     }
     .v-enter, .v-leave-to  {
-        transform: translateX(100px);
         opacity: 0;
     }
 </style>
@@ -277,13 +338,6 @@ function initMap (store) {
         margin: 0;
         padding: 0;
         overflow: hidden;
-    }
-    #app {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        margin: 0;
-        padding: 0;
     }
     input[type=range] {
         height: 26px;
