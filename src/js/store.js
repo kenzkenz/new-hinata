@@ -32,13 +32,6 @@ const store = new Vuex.Store({
         case 'map04Dialog':
           return state.layerList04
       }
-      /*
-      if (name === 'map01Dialog') {
-        return state.layerList01
-      } else {
-        return state.layerList02
-      }
-      */
     },
     close01Flg (state) { return state.close01Flg },
     close02Flg (state) { return state.close02Flg },
@@ -92,16 +85,16 @@ const store = new Vuex.Store({
         case 'map03Dialog':
           layerList = state.layerList03
           layer = payload.value.layer[2]
-          console.log('map03Dialog9999')
           break
         case 'map04Dialog':
           layerList = state.layerList04
           layer = payload.value.layer[3]
           break
       }
-      payload.value.layer = layer
-      layerList.unshift(payload.value)
-      console.log(2222222)
+      if (!layerList.find(el => el.id === payload.value.id)) {
+        payload.value.layer = layer
+        layerList.unshift(payload.value)
+      }
       /*
       if (!layerList.find(el => el.id === payload.value.id)) {
         payload.value.layer = layer
