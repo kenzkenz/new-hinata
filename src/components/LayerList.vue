@@ -5,7 +5,7 @@
 
 <script>
 import LiquorTree from 'liquor-tree'
-import layers from '../layers.js'
+import layers from '../js/layers.js'
 export default {
   name: 'LayerList',
   props: ['name'],
