@@ -113,7 +113,7 @@ export default {
     // 分割
     splitMap () {
       this.splitFlg++
-      if (this.splitFlg === 6) this.splitFlg = 1
+      if (this.splitFlg === 7) this.splitFlg = 1
       const height = window.innerHeight + 'px'
       const height2 = window.innerHeight / 2 + 'px'
       const vm = this
@@ -127,7 +127,7 @@ export default {
           this.map03Size = {top: 0, left: 0, width: 0, height: 0}
           this.map04Size = {top: 0, left: 0, width: 0, height: 0}
           break
-        // 2画面
+        // 2画面1
         case 2:
           this.synchDivFlg = true
           this.map02Flg = true; this.map03Flg = false; this.map04Flg = false
@@ -136,8 +136,17 @@ export default {
           this.map03Size = {top: 0, left: 0, width: 0, height: 0}
           this.map04Size = {top: 0, left: 0, width: 0, height: 0}
           break
-        // 3画面１
+        // 2画面2
         case 3:
+          this.synchDivFlg = true
+          this.map02Flg = true; this.map03Flg = false; this.map04Flg = false
+          this.map01Size = {top: 0, left: 0, width: '100%', height: height2}
+          this.map02Size = {top: '50%', left: 0, width: '100%', height: height2}
+          this.map03Size = {top: 0, left: 0, width: 0, height: 0}
+          this.map04Size = {top: 0, left: 0, width: 0, height: 0}
+          break
+        // 3画面１
+        case 4:
           this.synchDivFlg = true
           this.map02Flg = true; this.map03Flg = true; this.map04Flg = false
           this.map01Size = {top: 0, left: 0, width: '50%', height: height}
@@ -146,7 +155,7 @@ export default {
           this.map04Size = {top: 0, left: 0, width: 0, height: 0}
           break
         // 3画面2
-        case 4:
+        case 5:
           // this.map02Flg = false; this.map03Flg = false; this.map04Flg = false
           this.synchDivFlg = true
           this.map02Flg = true; this.map03Flg = true; this.map04Flg = false
@@ -156,7 +165,7 @@ export default {
           this.map04Size = {top: 0, left: 0, width: 0, height: 0}
           break
         // 4画面
-        case 5:
+        case 6:
           this.synchDivFlg = true
           this.map02Flg = true; this.map03Flg = true; this.map04Flg = true
           this.map01Size = {top: 0, left: 0, width: '50%', height: height2}
