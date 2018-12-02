@@ -63,7 +63,6 @@ const store = new Vuex.Store({
           state.layerList02 = payload.value
           break
         case 'map03Dialog':
-          console.log('map03Dialog')
           state.layerList03 = payload.value
           break
         case 'map04Dialog':

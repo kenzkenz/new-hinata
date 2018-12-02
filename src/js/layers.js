@@ -81,6 +81,20 @@ const miyazakiOrtArr = []
 for (let i = 0; i < 4; i++) {
   miyazakiOrtArr[i] = new TileLayer(new MiyazakiOrt())
 }
+// 岐阜県CS立体図
+function GihuCs () {
+  this.source = new XYZ({
+    url: 'https://kenzkenz2.xsrv.jp/gihucs/{z}/{x}/{-y}.png',
+    minZoom: 1,
+    maxZoom: 17
+  })
+}
+const gihuCsArr = []
+for (let i = 0; i < 4; i++) {
+  gihuCsArr[i] = new TileLayer(new GihuCs())
+}
+
+
 // ここにレイヤーを全部書く。クリックするとストアのlayerListに追加されていく
 const layers =
   [
@@ -95,7 +109,11 @@ const layers =
       ]},
     { text: '宮崎県',
       children: [
-        { text: '宮崎県航空写真', data: { id: 5, layer: miyazakiOrtArr, opacity: 100 } }
+        { text: '宮崎県航空写真', data: { id: 6, layer: miyazakiOrtArr, opacity: 100 } }
+      ]},
+    { text: '立体図等',
+      children: [
+        { text: '岐阜県CS立体図', data: { id: 7, layer: gihuCsArr, opacity: 100 } }
       ]}
   ]
 export default layers

@@ -26,13 +26,11 @@
 </template>
 
 <script>
-import VueDraggableResizable from 'vue-draggable-resizable'
 import draggable from 'vuedraggable'
 export default {
   name: 'Layer',
   props: ['name'],
   components: {
-    VueDraggableResizable,
     draggable
   },
   data () {
@@ -44,10 +42,8 @@ export default {
   },
   methods: {
     listDragBegin () {
-      console.log('dragstart!')
     },
     listDragEnd () {
-      console.log('dragend!')
     },
     opacityChange (item) {
       item.layer.setOpacity(item.opacity / 100)

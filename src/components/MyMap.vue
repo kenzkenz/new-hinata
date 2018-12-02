@@ -79,6 +79,7 @@ import View from 'ol/View.js'
 import { fromLonLat } from 'ol/proj.js'
 import LayerList from './LayerList.vue'
 import Layer from './Layer.vue'
+import * as aaa from '../js/permalink.js'
 const center = fromLonLat([140.097, 37.856])
 export default {
   name: 'MyMap',
